@@ -17,6 +17,8 @@ export const Login = () => {
     }
 
     if (auth.currentUser) {
+      // create entry in database for user if it does not already exist
+
       navigate("/home");
     }
   }
