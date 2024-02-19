@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { SignIn } from './pages/SignIn';
+import { Login } from './pages/Login';
 import { Home } from './pages/Home';
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <Routes>   
-            <Route path='/' element={<SignIn />} />
+            <Route path='/' element={<Login />} />
             <Route path='/home' element={<Home />} />
           </Routes>
         </header>
