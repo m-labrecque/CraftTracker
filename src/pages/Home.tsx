@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { getAuth } from "firebase/auth";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
 import { db } from "../FireBase";
 
@@ -16,12 +16,25 @@ export const Home = () => {
         projects: []
       }
 
-      const hello = async() => {
+      const updateUser = async() => {
         const userDoc = doc(userRef, auth.currentUser?.uid);
-        await setDoc(userDoc, user, {merge: true});
+        const userSnap = await getDoc(userDoc);
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          if (!userData.uid || !userData.projects) {
+            await setDoc(userDoc, user, {merge: true});
+            console.log("User added to user collection");
+          }
+          else {
+            console.log("User already in collection");
+          }
+        }
+        else {
+          console.log("it does not exist");
+        }
       }
 
-      hello();
+      updateUser();
       setLoggedIn("true");
     }
   }, [])
