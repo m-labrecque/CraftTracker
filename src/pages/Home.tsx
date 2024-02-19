@@ -1,6 +1,8 @@
 import { Typography } from "@mui/material";
 import { getAuth } from "firebase/auth";
+import { collection, doc, setDoc } from "firebase/firestore";
 import React from "react";
+import { db } from "../FireBase";
 
 export const Home = () => {
   const auth = getAuth();
@@ -8,6 +10,18 @@ export const Home = () => {
 
   React.useEffect(() => {
     if (auth.currentUser) {
+      const userRef = collection(db, 'user');
+      const user = {
+        uid: auth.currentUser.uid,
+        projects: []
+      }
+
+      const hello = async() => {
+        const userDoc = doc(userRef, auth.currentUser?.uid);
+        await setDoc(userDoc, user, {merge: true});
+      }
+
+      hello();
       setLoggedIn("true");
     }
   }, [])
