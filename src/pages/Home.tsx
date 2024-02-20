@@ -7,36 +7,40 @@ import { Link } from "react-router-dom";
 
 export const Home = () => {
   const auth = getAuth();
-  const [loggedIn, setLoggedIn] = React.useState<string>("false");
 
   React.useEffect(() => {
-    if (auth.currentUser) {
-      const userRef = collection(db, 'user');
+    if (auth.currentUser?.uid !== null) {
+      const userRef = collection(db, "users");
       const user = {
-        uid: auth.currentUser.uid,
-        projects: []
-      }
+        uid: auth.currentUser?.uid,
+        email: auth.currentUser?.email,
+        Projects: []
+      };
 
       const updateUser = async() => {
-        const userDoc = doc(userRef, auth.currentUser?.uid);
-        const userSnap = await getDoc(userDoc);
-        if (userSnap.exists()) {
-          const userData = userSnap.data();
-          if (!userData.uid || !userData.projects) {
-            await setDoc(userDoc, user, {merge: true});
-            console.log("User added to user collection");
+        try {
+          const userDoc = doc(userRef, auth.currentUser?.uid);
+          const userSnap = await getDoc(userDoc);
+          if (userSnap.exists()) {
+            const userData = userSnap.data();
+            if (!userData.uid || !userData.Projects || !userData.email) {
+              await setDoc(userDoc, user, {merge: true});
+              console.log("User added to user collection");
+            }
+            else {
+              console.log("User already in collection");
+            }
           }
           else {
-            console.log("User already in collection");
+            await setDoc(userDoc, user, {merge: true})
+            console.log("Document did not already exist, added now");
           }
-        }
-        else {
-          console.log("it does not exist");
+        } catch (e) {
+          console.log("error");
         }
       }
 
       updateUser();
-      setLoggedIn("true");
     }
   }, [])
 
