@@ -1,14 +1,16 @@
-import { AppBar, Button, IconButton, ThemeProvider, Typography } from "@mui/material"
+import { AppBar, Button, IconButton, ThemeProvider, Toolbar, Typography } from "@mui/material"
 import React from "react"
-import { color } from "../themes"
+import { mainTheme } from "../themes"
 
 export const Header = () => {
   return (
-    <ThemeProvider theme={color}>
+    <ThemeProvider theme={mainTheme}>
       <AppBar>
-        <IconButton>
-          
-        </IconButton>
+        <Toolbar>
+          <Button>Home</Button>
+          <Typography style={{color: '#AAADBC'}}>Header</Typography>
+        </Toolbar>
+        
       </AppBar>
     </ThemeProvider>
   )
