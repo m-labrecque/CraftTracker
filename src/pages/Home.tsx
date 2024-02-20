@@ -1,8 +1,9 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { getAuth } from "firebase/auth";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
 import { db } from "../FireBase";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   const auth = getAuth();
@@ -41,8 +42,10 @@ export const Home = () => {
 
   return (
     <>
-      <p>Hello, we are now on the home page</p>
-      <Typography>{loggedIn}</Typography>
+      <Typography>Home page</Typography>
+      <Link to={"/projects"}>
+        <Button>Projects</Button>
+      </Link>
     </>
   )
 }
