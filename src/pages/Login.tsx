@@ -1,8 +1,10 @@
-import { Button } from "@mui/material";
+import { Button, ThemeProvider } from "@mui/material";
 import { getAuth, signInWithPopup } from "firebase/auth"
 import React from "react"
 import { useNavigate } from "react-router-dom";
 import { google } from "../FireBase";
+import { color } from "../themes";
+import { Header } from "../headers/Header";
 
 export const Login = () => {
   const auth = getAuth();
@@ -22,9 +24,10 @@ export const Login = () => {
   }
 
   return (
-    <>
+    <ThemeProvider theme={color}>
+      <Header/>
       <p>Login page</p>
       <Button onClick={googleSignin}>Google</Button>
-    </>
+    </ThemeProvider>
   )
 }
