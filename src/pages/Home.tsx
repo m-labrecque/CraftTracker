@@ -1,9 +1,11 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Grid, Paper, ThemeProvider, Typography } from "@mui/material";
 import { getAuth } from "firebase/auth";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
 import { db } from "../FireBase";
 import { Link } from "react-router-dom";
+import { mainTheme } from "../themes";
+import { Header } from "../headers/Header";
 
 export const Home = () => {
   const auth = getAuth();
@@ -45,11 +47,32 @@ export const Home = () => {
   }, [])
 
   return (
-    <>
+    <ThemeProvider theme={mainTheme}>
+      <Header/>
       <Typography>Home page</Typography>
-      <Link to={"/projects"}>
-        <Button>Projects</Button>
-      </Link>
-    </>
+      <Grid
+        container
+        justifyContent="center"
+        spacing={2}>
+        <Grid item>
+        <Paper sx={{
+          p: 2,
+          backgroundColor: '#E9EBF8'
+        }}>
+          <Link to={"/projects"}>
+            <Button>Projects</Button>
+          </Link>
+        </Paper>
+        </Grid>
+        <Grid item>
+        <Paper sx={{
+          p: 2,
+          backgroundColor: '#E9EBF8'
+        }}>
+          <Typography>Something else</Typography>
+        </Paper>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
   )
 }
