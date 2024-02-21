@@ -55,22 +55,22 @@ export const Home = () => {
         justifyContent="center"
         spacing={2}>
         <Grid item>
-        <Paper sx={{
-          p: 2,
-          backgroundColor: '#E9EBF8'
-        }}>
-          <Link to={"/projects"}>
-            <Button>Projects</Button>
-          </Link>
-        </Paper>
+          <Paper sx={{
+            p: 2,
+            backgroundColor: '#E9EBF8'
+          }}>
+            <Link to={"/projects"}>
+              <Button>Projects</Button>
+            </Link>
+          </Paper>
         </Grid>
         <Grid item>
-        <Paper sx={{
-          p: 2,
-          backgroundColor: '#E9EBF8'
-        }}>
-          <Typography>Something else</Typography>
-        </Paper>
+          <Paper sx={{
+            p: 2,
+            backgroundColor: '#E9EBF8'
+          }}>
+            <Typography>Something else</Typography>
+          </Paper>
         </Grid>
       </Grid>
     </ThemeProvider>
