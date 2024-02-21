@@ -34,7 +34,6 @@ export const Projects = () => {
               p: 2,
               backgroundColor: '#E9EBF8'
             }}>
-            {/* <Typography>{p.Name}</Typography> */}
             <Button onClick={() => gotoProject(p.Name)}>{p.Name}</Button>
             
             </Paper>
