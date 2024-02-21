@@ -2,8 +2,8 @@ import React from "react"
 import { ThemeProvider } from "@emotion/react"
 import { mainTheme } from "../themes"
 import { Header } from "../headers/Header"
-import { Grid, Paper, Typography } from "@mui/material"
-import { useLocation } from "react-router-dom"
+import { Button, Grid, Paper, Typography } from "@mui/material"
+import { useLocation, useNavigate } from "react-router-dom"
 import { Project } from "../AppBaseTypes"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "../FireBase"
@@ -12,7 +12,8 @@ import { getAuth } from "firebase/auth"
 
 export const ProjectHome = () => {
   const location = useLocation();
-  const auth = getAuth(); 
+  const auth = getAuth();
+  const navigate = useNavigate();
 
   const [name, setName] = React.useState<string>("");
   const [currentProject, setCurrentProject] = React.useState<Project>();
@@ -33,7 +34,12 @@ export const ProjectHome = () => {
   React.useEffect(() => {
     setName(location.state?.ProjectName);
     getProject();
-  }, [])
+  }, []);
+
+  const gotoCounters = () => {
+
+    navigate('/projectcounters', {state: {ProjectName: name}});
+  }
 
   return (
     <ThemeProvider theme={mainTheme}>
@@ -50,7 +56,7 @@ export const ProjectHome = () => {
             p: 2,
             backgroundColor: '#E9EBF8'
           }}>
-            <Typography>Counters</Typography>
+            <Button onClick={gotoCounters}></Button>
           </Paper>
         </Grid>
         <Grid item>
