@@ -4,15 +4,34 @@ import { Project } from "../AppBaseTypes";
 import { mainTheme } from "../themes";
 import { Header } from "../headers/Header";
 import { useNavigate } from "react-router-dom";
+import { getAuth } from "firebase/auth";
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../FireBase";
 
 export const Projects = () => {
   const [projects, setProjects] = React.useState<Project[]>([]);
   const navigate = useNavigate();
+  const auth = getAuth();
+
   const [open, setOpen] = React.useState<boolean>(false);
   const [newProjectName, setNewProjectName] = React.useState<string>("");
 
-  React.useEffect(() => {
-    setProjects([{Name: "Folklore Cartigan"}, {Name: "Patchwork Cartigan"}]);
+  const getProjects = async() => {
+    const userRef = doc(db, "users", auth.currentUser?.uid || "");
+    const userSnap = await getDoc(userRef);
+    const data = userSnap.data();
+    console.log("got data");
+
+    console.log(data);
+
+    if (data?.Projects) {
+      setProjects(data.Projects);
+      console.log("got projects");
+    }
+  }
+
+  React.useEffect(() => { 
+    getProjects();
   }, []);
 
   function gotoProject(name: string) {
@@ -21,17 +40,20 @@ export const Projects = () => {
   }
 
   const handleOpen = () => {
-    console.log("open");
     setOpen(true);
   }
 
   const handleClose = () => {
-    console.log("close");
     setOpen(false);
   }
 
-  const handleCreate = () => {
+  const handleCreate = async() => {
     console.log("create");
+    const newProject = {Name: newProjectName};
+
+    const userRef = doc(db, "users", auth.currentUser?.uid || "");
+    await updateDoc(userRef, {Projects: arrayUnion(newProject)});
+    getProjects();
     setOpen(false);
   }
 
@@ -50,13 +72,12 @@ export const Projects = () => {
         spacing={1}
         >
         {projects.map((p) => (
-          <Grid item xs={6} md={8}>
+          <Grid key={p.Name} item xs={6} md={8}>
             <Paper sx={{
               p: 2,
               backgroundColor: '#E9EBF8'
             }}>
             <Button onClick={() => gotoProject(p.Name)}>{p.Name}</Button>
-            
             </Paper>
           </Grid>
         ))}

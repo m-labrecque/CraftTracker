@@ -1,5 +1,7 @@
 export interface Project {
   Name: string
+  // mainCounter: MainCounter
+  // otherCounters: Counter[]
 }
 
 export interface MainCounter {
