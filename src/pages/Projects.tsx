@@ -49,7 +49,7 @@ export const Projects = () => {
 
   const handleCreate = async() => {
     console.log("create");
-    const newProject = {Name: newProjectName};
+    const newProject = {Name: newProjectName, mainCounter: {count: 0, Children: []}, otherCounters: []};
 
     const userRef = doc(db, "users", auth.currentUser?.uid || "");
     await updateDoc(userRef, {Projects: arrayUnion(newProject)});
