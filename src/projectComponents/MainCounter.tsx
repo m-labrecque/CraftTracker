@@ -1,4 +1,4 @@
-import { Box, IconButton, Paper, Stack, ThemeProvider, Typography } from "@mui/material"
+import { IconButton, Paper, Stack, ThemeProvider, Typography } from "@mui/material"
 import { mainTheme } from "../themes"
 import { AddCircleOutlineRounded, RemoveCircleOutlineRounded } from "@mui/icons-material";
 
