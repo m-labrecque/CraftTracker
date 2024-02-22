@@ -23,11 +23,12 @@ export const ProjectHome = () => {
     const userRef = doc(db, 'users', auth.currentUser?.uid || "");
     const userSnap = await getDoc(userRef);
     const data = userSnap.data();
+    console.log("got projects");
 
     if (data?.Projects) {
       const filteredProjects = data.Projects.filter((n: {Name: string}) => n.Name === projectName);
       setCurrentProject(filteredProjects[0]);
-      console.log(currentProject);
+      console.log("got current project");
     }
   }
 
@@ -37,7 +38,6 @@ export const ProjectHome = () => {
   }, []);
 
   const gotoCounters = () => {
-
     navigate('/projectcounters', {state: {ProjectName: name}});
   }
 

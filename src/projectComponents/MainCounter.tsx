@@ -1,8 +1,9 @@
 import { IconButton, Paper, Stack, ThemeProvider, Typography } from "@mui/material"
 import { mainTheme } from "../themes"
 import { AddCircleOutlineRounded, RemoveCircleOutlineRounded } from "@mui/icons-material";
+import { MainCounter } from "../AppBaseTypes";
 
-export const MainCounter = () => {
+export const PrimaryCounter = ({data}: {data: MainCounter}) => {
 
   return (
     <ThemeProvider theme={mainTheme}>
@@ -16,7 +17,7 @@ export const MainCounter = () => {
           <IconButton size="large" color="primary" sx={{fontSize: '4.5rem'}}>
             <RemoveCircleOutlineRounded fontSize="inherit"/>
           </IconButton>
-          <Typography>count</Typography>
+          <Typography>{data.count}</Typography>
           <IconButton size="large" color="primary" sx={{fontSize: '4.5rem'}}>
             <AddCircleOutlineRounded fontSize="inherit"/>
           </IconButton>

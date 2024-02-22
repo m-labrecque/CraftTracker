@@ -20,9 +20,6 @@ export const Projects = () => {
     const userRef = doc(db, "users", auth.currentUser?.uid || "");
     const userSnap = await getDoc(userRef);
     const data = userSnap.data();
-    console.log("got data");
-
-    console.log(data);
 
     if (data?.Projects) {
       setProjects(data.Projects);
