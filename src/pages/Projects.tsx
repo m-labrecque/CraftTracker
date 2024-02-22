@@ -23,7 +23,7 @@ export const Projects = () => {
 
     snapShot.forEach((d) => {
       const data = d.data();
-      const p = {Name: data.Name, mainCounter: data.mainCounter, otherCounters: data.otherCounters};
+      const p = {Name: data.Name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters};
       setProjects([...projects, p]);
     });
     console.log("got projects");
@@ -48,7 +48,7 @@ export const Projects = () => {
 
   const handleCreate = async() => {
     console.log("create");
-    const newProject = {Name: newProjectName, mainCounter: {count: 0, Children: []}, otherCounters: []};
+    const newProject = {Name: newProjectName, mainCounterCount: 0, otherCounters: []};
 
     const userDoc = doc(db, "users", auth.currentUser?.uid || "");
     const projectsRef = collection(userDoc, "projects");

@@ -1,6 +1,6 @@
 export interface Project {
   Name: string
-  mainCounter: MainCounter
+  mainCounterCount: number
   otherCounters: Counter[]
 }
 

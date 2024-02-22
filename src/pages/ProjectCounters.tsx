@@ -3,7 +3,7 @@ import { mainTheme } from "../themes"
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { Counter, MainCounter, Project } from "../AppBaseTypes";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, increment, updateDoc } from "firebase/firestore";
 import { db } from "../FireBase";
 import { getAuth } from "firebase/auth";
 import { Header } from "../headers/Header";
@@ -16,7 +16,7 @@ export const ProjectCounters = () => {
   const auth = getAuth();
 
   const [currentProject, setCurrentProject] = React.useState<Project>();
-  const [primaryCounter, setPrimaryCounter] = React.useState<MainCounter>();
+  const [primaryCounter, setPrimaryCounter] = React.useState<number>(0);
   const [secondaryCounters, setSecondaryCounters] = React.useState<Counter[]>([]);
   const projectName = location.state?.ProjectName || "";
 
@@ -29,8 +29,8 @@ export const ProjectCounters = () => {
       console.log("got project data");
 
       if (data) {
-        setCurrentProject({Name: data.Name, mainCounter: data.mainCounter, otherCounters: data.otherCounters});
-        setPrimaryCounter(data.mainCounter);
+        setCurrentProject({Name: data.Name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters});
+        setPrimaryCounter(data.mainCounterCount);
         console.log("set all data for project counters");
       }
 
@@ -44,15 +44,29 @@ export const ProjectCounters = () => {
   }, []);
 
   const increasePrimary = async() => {
-    // const userRef = doc(db, 'users', auth.currentUser?.uid || "");
-    // const snap = await getDoc(userRef);
-    // console.log(snap.data());
-    // await updateDoc(userRef, {Projects: })
+    try {
+      if (auth.currentUser) {
+        const projectDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName);
+        await updateDoc(projectDoc, {mainCounterCount: increment(1)});
+        getProject();
+      }
+    } catch (e) {
+      console.log(e);
+    }
 
     console.log("increase primary");
   }
 
-  const decreasePrimary = () => {
+  const decreasePrimary = async() => {
+    try {
+      if (auth.currentUser) {
+        const projectDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName);
+        await updateDoc(projectDoc, {mainCounterCount: increment(-1)});
+        getProject();
+      }
+    } catch (e) {
+      console.log(e);
+    }
     console.log("decrease primary");
   }
 
@@ -70,7 +84,7 @@ export const ProjectCounters = () => {
           <IconButton size="large" color="primary" sx={{fontSize: '4.5rem'}} onClick={decreasePrimary}>
             <RemoveCircleOutlineRounded fontSize="inherit"/>
           </IconButton>
-          <Typography>{primaryCounter?.count}</Typography>
+          <Typography>{primaryCounter}</Typography>
           <IconButton size="large" color="primary" sx={{fontSize: '4.5rem'}} onClick={increasePrimary}>
             <AddCircleOutlineRounded fontSize="inherit"/>
           </IconButton>
