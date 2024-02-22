@@ -21,16 +21,21 @@ export const ProjectCounters = () => {
   const projectName = location.state?.ProjectName || "";
 
   const getProject = async() => {
-    const userRef = doc(db, 'users', auth.currentUser?.uid || "");
-    const userSnap = await getDoc(userRef);
-    const data = userSnap.data();
+    try {
+      const userDoc = doc(db, 'users', auth.currentUser?.uid || "");
+      const projectDoc = doc(userDoc, 'projects', projectName);
+      const projectSnap = await getDoc(projectDoc);
+      const data = projectSnap.data();
+      console.log("got project data");
 
-    console.log(data);
-    if (data?.Projects) {
-      const filteredProjects = data.Projects.filter((n: {Name: string}) => n.Name === projectName);
-      setCurrentProject(filteredProjects[0]);
-      setPrimaryCounter(filteredProjects[0].mainCounter);
-      console.log(currentProject);
+      if (data) {
+        setCurrentProject({Name: data.Name, mainCounter: data.mainCounter, otherCounters: data.otherCounters});
+        setPrimaryCounter(data.mainCounter);
+        console.log("set all data for project counters");
+      }
+
+    } catch (e) {
+      console.log(e);
     }
   }
 

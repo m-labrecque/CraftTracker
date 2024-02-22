@@ -5,7 +5,7 @@ import { Header } from "../headers/Header"
 import { Button, Grid, Paper, Typography } from "@mui/material"
 import { useLocation, useNavigate } from "react-router-dom"
 import { Project } from "../AppBaseTypes"
-import { doc, getDoc } from "firebase/firestore"
+import { collection, doc, getDoc } from "firebase/firestore"
 import { db } from "../FireBase"
 import { getAuth } from "firebase/auth"
 
@@ -20,15 +20,18 @@ export const ProjectHome = () => {
   const projectName = location.state?.ProjectName || "";
 
   const getProject = async() => {
-    const userRef = doc(db, 'users', auth.currentUser?.uid || "");
-    const userSnap = await getDoc(userRef);
-    const data = userSnap.data();
-    console.log("got projects");
+    try {
+      const userRef = doc(db, 'users', auth.currentUser?.uid || "");
+      const projectRef = doc(userRef, 'projects', projectName);
+      const projectSnap = await getDoc(projectRef);
+      const data = projectSnap.data();
+      console.log("got project data");
 
-    if (data?.Projects) {
-      const filteredProjects = data.Projects.filter((n: {Name: string}) => n.Name === projectName);
-      setCurrentProject(filteredProjects[0]);
-      console.log("got current project");
+      if (data) {
+        setCurrentProject({Name: data.Name, mainCounter: data.mainCounter, otherCounters: data.otherCounters});
+      }
+    } catch (e) {
+      console.log(e);
     }
   }
 
