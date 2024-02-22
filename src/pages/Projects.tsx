@@ -5,7 +5,7 @@ import { mainTheme } from "../themes";
 import { Header } from "../headers/Header";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
-import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../FireBase";
 
 export const Projects = () => {
@@ -17,14 +17,16 @@ export const Projects = () => {
   const [newProjectName, setNewProjectName] = React.useState<string>("");
 
   const getProjects = async() => {
-    const userRef = doc(db, "users", auth.currentUser?.uid || "");
-    const userSnap = await getDoc(userRef);
-    const data = userSnap.data();
+    const userDoc = doc(db, "users", auth.currentUser?.uid || "");
+    const projectsRef = collection(userDoc, "projects");
+    const snapShot = await getDocs(projectsRef);
 
-    if (data?.Projects) {
-      setProjects(data.Projects);
-      console.log("got projects");
-    }
+    snapShot.forEach((d) => {
+      const data = d.data();
+      const p = {Name: data.Name, mainCounter: data.mainCounter, otherCounters: data.otherCounters};
+      setProjects([...projects, p]);
+    });
+    console.log("got projects");
   }
 
   React.useEffect(() => { 
@@ -48,8 +50,12 @@ export const Projects = () => {
     console.log("create");
     const newProject = {Name: newProjectName, mainCounter: {count: 0, Children: []}, otherCounters: []};
 
-    const userRef = doc(db, "users", auth.currentUser?.uid || "");
-    await updateDoc(userRef, {Projects: arrayUnion(newProject)});
+    const userDoc = doc(db, "users", auth.currentUser?.uid || "");
+    const projectsRef = collection(userDoc, "projects");
+    const projectsDoc = doc(projectsRef, newProjectName);
+
+    await setDoc(projectsDoc, newProject, {merge: true});
+
     getProjects();
     setOpen(false);
   }
