@@ -2,13 +2,13 @@ import { IconButton, Paper, Stack, ThemeProvider, Typography } from "@mui/materi
 import { mainTheme } from "../themes"
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { Counter, MainCounter, Project } from "../AppBaseTypes";
+import { Counter, Project } from "../AppBaseTypes";
 import { doc, getDoc, increment, updateDoc } from "firebase/firestore";
 import { db } from "../FireBase";
 import { getAuth } from "firebase/auth";
 import { Header } from "../headers/Header";
 import { AddCircleOutlineRounded, RemoveCircleOutlineRounded } from "@mui/icons-material";
-import { PrimaryCounter } from "../projectComponents/MainCounter";
+import { NewCounterPopup } from "../projectComponents/NewCounterPopup";
 
 
 export const ProjectCounters = () => {  
@@ -22,18 +22,18 @@ export const ProjectCounters = () => {
 
   const getProject = async() => {
     try {
-      const userDoc = doc(db, 'users', auth.currentUser?.uid || "");
-      const projectDoc = doc(userDoc, 'projects', projectName);
-      const projectSnap = await getDoc(projectDoc);
-      const data = projectSnap.data();
-      console.log("got project data");
+      if (auth.currentUser) {
+        const projectDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName);
+        const projectSnap = await getDoc(projectDoc);
+        const data = projectSnap.data();
+        console.log("got project data");
 
-      if (data) {
-        setCurrentProject({Name: data.Name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters});
-        setPrimaryCounter(data.mainCounterCount);
-        console.log("set all data for project counters");
+        if (data) {
+          setCurrentProject({Name: data.Name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters});
+          setPrimaryCounter(data.mainCounterCount);
+          console.log("set all data for project counters");
+        }
       }
-
     } catch (e) {
       console.log(e);
     }
@@ -92,7 +92,11 @@ export const ProjectCounters = () => {
       </Paper>
 
       {/* all the other counters (the counters linked to the main counter) */}
-      <Typography>This is where the rest of the counters go</Typography>
+      {secondaryCounters.map((c) => (
+        <Typography>Hello</Typography>
+      ))}
+
+      <NewCounterPopup name={projectName}/>
     </ThemeProvider>
   )
 }

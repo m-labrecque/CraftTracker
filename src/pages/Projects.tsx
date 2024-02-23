@@ -1,11 +1,11 @@
-import { Box, Button, Dialog, DialogContent, Grid, Paper, TextField, ThemeProvider, Typography } from "@mui/material"
+import { Box, Button, Dialog, DialogActions, DialogContent, Grid, Paper, TextField, ThemeProvider, Typography } from "@mui/material"
 import React from "react"
 import { Project } from "../AppBaseTypes";
 import { mainTheme } from "../themes";
 import { Header } from "../headers/Header";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
-import { arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../FireBase";
 
 export const Projects = () => {
@@ -94,9 +94,11 @@ export const Projects = () => {
           <TextField 
             id="Project Name"
             onChange={handleNameChange}/>
+        </DialogContent>
+        <DialogActions>
           <Button onClick={handleCreate}>Create</Button>
           <Button onClick={handleClose}>Cancel</Button>
-        </DialogContent>
+        </DialogActions>
       </Dialog>
     </ThemeProvider>
   )
