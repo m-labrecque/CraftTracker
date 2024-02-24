@@ -85,6 +85,10 @@ export const ProjectCounters = () => {
     <ThemeProvider theme={mainTheme}>
       <Header/>
       {/* primary counter */}
+      <Stack
+        direction="column"
+        spacing={2}
+      >
       <Paper sx={{backgroundColor: "#E9EBF8"}}>
         <Stack
           direction="row"
@@ -95,7 +99,7 @@ export const ProjectCounters = () => {
           <IconButton size="large" color="primary" sx={{fontSize: '4.5rem'}} onClick={decreasePrimary}>
             <RemoveCircleOutlineRounded fontSize="inherit"/>
           </IconButton>
-          <Typography>{primaryCounter}</Typography>
+          <Typography variant="h4">{primaryCounter}</Typography>
           <IconButton size="large" color="primary" sx={{fontSize: '4.5rem'}} onClick={increasePrimary}>
             <AddCircleOutlineRounded fontSize="inherit"/>
           </IconButton>
@@ -103,14 +107,22 @@ export const ProjectCounters = () => {
       </Paper>
 
       {/* all the other counters (the counters linked to the main counter) */}
+      <Stack
+        direction="row"
+        justifyContent="space-evenly"
+        alignItems="center"
+        spacing={2}
+      >
       {secondaryCounters.map((c) => (
         <Box>
-          <Typography>{c.Name}</Typography>
-          <Typography>{c.resetAt}</Typography>
-          <Typography>{c.LinkedToGlobal}</Typography>
+          <Paper sx={{p: 1.5, backgroundColor: "#E9EBF8"}}>
+            <Typography variant="h6">{c.Name}</Typography>
+            <Typography variant="h4">{c.count}</Typography>
+          </Paper>
         </Box>
       ))}
-
+      </Stack>
+      </Stack>
       <NewCounterPopup name={projectName} getProject={getProject}/>
     </ThemeProvider>
   )
