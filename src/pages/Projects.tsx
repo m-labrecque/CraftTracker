@@ -21,11 +21,12 @@ export const Projects = () => {
     const projectsRef = collection(userDoc, "projects");
     const snapShot = await getDocs(projectsRef);
 
+    let p: Project[] = [];
     snapShot.forEach((d) => {
       const data = d.data();
-      const p = {Name: data.Name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters};
-      setProjects([...projects, p]);
+      p.push({Name: data.Name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters});
     });
+    setProjects(p);
     console.log("got projects");
   }
 
@@ -48,16 +49,23 @@ export const Projects = () => {
 
   const handleCreate = async() => {
     console.log("create");
-    const newProject = {Name: newProjectName, mainCounterCount: 0, otherCounters: []};
+    console.log(newProjectName);
+    if (newProjectName.length === 0) {
+      alert("Error: project name cannot be empty");
+    }
+    else {
+      if (auth.currentUser) {
+        const newProject = {Name: newProjectName, mainCounterCount: 0, otherCounters: []};
 
-    const userDoc = doc(db, "users", auth.currentUser?.uid || "");
-    const projectsRef = collection(userDoc, "projects");
-    const projectsDoc = doc(projectsRef, newProjectName);
+        const projectsDoc = doc(db, "users", auth.currentUser.uid, "projects", newProjectName);
+        await setDoc(projectsDoc, newProject, {merge: true});
 
-    await setDoc(projectsDoc, newProject, {merge: true});
+        setNewProjectName("");
 
-    getProjects();
-    setOpen(false);
+        getProjects();
+        setOpen(false);
+      }
+    }
   }
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {

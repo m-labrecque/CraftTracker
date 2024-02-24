@@ -1,9 +1,9 @@
-import { IconButton, Paper, Stack, ThemeProvider, Typography } from "@mui/material"
+import { Box, IconButton, Paper, Stack, ThemeProvider, Typography } from "@mui/material"
 import { mainTheme } from "../themes"
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { Counter, Project } from "../AppBaseTypes";
-import { doc, getDoc, increment, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, increment, updateDoc } from "firebase/firestore";
 import { db } from "../FireBase";
 import { getAuth } from "firebase/auth";
 import { Header } from "../headers/Header";
@@ -32,6 +32,17 @@ export const ProjectCounters = () => {
           setCurrentProject({Name: data.Name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters});
           setPrimaryCounter(data.mainCounterCount);
           console.log("set all data for project counters");
+
+          const counterDoc = collection(projectDoc, 'secondaryCounters');
+          const snapShot = await getDocs(counterDoc);
+          
+          let c: Counter[] = [];
+          snapShot.forEach((i) => {
+            const data = i.data();
+            c.push({Name: data.Name, count: data.Count, LinkedToGlobal: data.linkedToGlobal, resetAt: data.resetAt});
+          });
+          setSecondaryCounters(c);
+          console.log("got counters");
         }
       }
     } catch (e) {
@@ -93,7 +104,11 @@ export const ProjectCounters = () => {
 
       {/* all the other counters (the counters linked to the main counter) */}
       {secondaryCounters.map((c) => (
-        <Typography>Hello</Typography>
+        <Box>
+          <Typography>{c.Name}</Typography>
+          <Typography>{c.resetAt}</Typography>
+          <Typography>{c.LinkedToGlobal}</Typography>
+        </Box>
       ))}
 
       <NewCounterPopup name={projectName} getProject={getProject}/>
