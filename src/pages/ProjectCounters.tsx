@@ -39,7 +39,7 @@ export const ProjectCounters = () => {
           let c: Counter[] = [];
           snapShot.forEach((i) => {
             const data = i.data();
-            c.push({Name: data.Name, count: data.Count, LinkedToGlobal: data.linkedToGlobal, resetAt: data.resetAt});
+            c.push({Name: data.Name, count: data.count, LinkedToGlobal: data.linkedToGlobal, resetAt: data.resetAt});
           });
           setSecondaryCounters(c);
           console.log("got counters");
@@ -59,13 +59,27 @@ export const ProjectCounters = () => {
       if (auth.currentUser) {
         const projectDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName);
         await updateDoc(projectDoc, {mainCounterCount: increment(1)});
+
+        const counterDoc = collection(projectDoc, 'secondaryCounters');
+        const snapShot = await getDocs(counterDoc);
+
+        snapShot.forEach(async(i) => {
+          const c = i.data();
+          if (c.linkedToGlobal) {
+            const cDoc = doc(counterDoc, c.Name);
+            if (c.count === c.resetAt) {
+              await updateDoc(cDoc, {count: 1});
+            } 
+            else {
+              await updateDoc(cDoc, {count: increment(1)});
+            }
+          }
+        });
         getProject();
       }
     } catch (e) {
       console.log(e);
     }
-
-    console.log("increase primary");
   }
 
   const decreasePrimary = async() => {
