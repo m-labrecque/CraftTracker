@@ -5,12 +5,12 @@ import { getAuth } from "firebase/auth"
 import { doc, setDoc } from "firebase/firestore"
 import { db } from "../FireBase"
 
-export const NewCounterPopup = ({name}: {name: string}) => {
+export const NewCounterPopup = ({name, getProject}: {name: string, getProject: () => void}) => {
   const auth = getAuth();
 
   const [open, setOpen] = React.useState<boolean>(false);
   const [counterName, setCounterName] = React.useState<string>("");
-  const [linkedToGlobal, setLinkedToGlobal] = React.useState<boolean>(false);
+  const [linkedToGlobal, setLinkedToGlobal] = React.useState<boolean>(true);
   const [resetNumber, setResetNumber] = React.useState<string>("");
 
   const handleOpen = () => {
@@ -37,6 +37,7 @@ export const NewCounterPopup = ({name}: {name: string}) => {
           await setDoc(counterDoc, newCounter, {merge: true});
           console.log("create");
           setOpen(false);
+          getProject();
         }
       }
     } catch (e) {
@@ -52,14 +53,18 @@ export const NewCounterPopup = ({name}: {name: string}) => {
     setResetNumber(event.target.value);
   }
 
+  const handleLinkedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLinkedToGlobal(event.target.checked);
+  }
+
   return (
     <ThemeProvider theme={mainTheme}>
-      <Button onClick={handleOpen}>Add Secondary Counter</Button>
+      <Button onClick={handleOpen}>Add New Counter</Button>
 
-      <Dialog open={open} onClose={handleClose}>
-        <DialogContent>
+      <Dialog open={open} onClose={handleClose} >
+        <DialogContent sx={{backgroundColor: '#E9EBF8'}}>
           <Stack>
-            <Typography>{name}</Typography>
+            <Typography>Create New Counter</Typography>
             <TextField 
               id="counter-name"
               label="Name"
@@ -68,17 +73,17 @@ export const NewCounterPopup = ({name}: {name: string}) => {
             />
             <TextField
               id="reset-at"
-              label="reset counter at"
+              label="Reset Counter At"
               onChange={handleResetAtChange}
               variant="standard"
             />
             <FormGroup>
-              <FormControlLabel control={<Checkbox />} label="Link with primary counter" />
-              <FormControlLabel control={<Switch />} label="which one is better" />
+              {/* <FormControlLabel control={<Checkbox />} label="Link with primary counter" /> */}
+              <FormControlLabel control={<Switch checked={linkedToGlobal} onChange={handleLinkedChange}/>} label="Link with primary counter" />
             </FormGroup>
           </Stack>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{backgroundColor: '#E9EBF8'}}>
           <Button onClick={handleCreate}>Create</Button>
           <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>

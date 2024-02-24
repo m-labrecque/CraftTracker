@@ -96,7 +96,7 @@ export const ProjectCounters = () => {
         <Typography>Hello</Typography>
       ))}
 
-      <NewCounterPopup name={projectName}/>
+      <NewCounterPopup name={projectName} getProject={getProject}/>
     </ThemeProvider>
   )
 }
