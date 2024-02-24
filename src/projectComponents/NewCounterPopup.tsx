@@ -32,7 +32,7 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
           alert("Error: reset number is not a number.")
         }
         else {
-          const newCounter = {Name: counterName, Count: 0, linkedToGlobal: linkedToGlobal, resetAt: reset};
+          const newCounter = {Name: counterName, count: 0, linkedToGlobal: linkedToGlobal, resetAt: reset};
           const counterDoc = doc(db, 'users', auth.currentUser.uid, 'projects', name, 'secondaryCounters', counterName);
           await setDoc(counterDoc, newCounter, {merge: true});
           console.log("create");

@@ -86,8 +86,31 @@ export const ProjectCounters = () => {
     try {
       if (auth.currentUser) {
         const projectDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName);
-        await updateDoc(projectDoc, {mainCounterCount: increment(-1)});
-        getProject();
+        const projectSnap = await getDoc(projectDoc);
+        const projectData = projectSnap.data();
+        if (projectData?.mainCounterCount === 0) {
+          alert("Error: cannot decrease a counter that is already at 0.");
+        }
+        else {
+          await updateDoc(projectDoc, {mainCounterCount: increment(-1)});
+          
+          const counterDoc = collection(projectDoc, 'secondaryCounters');
+          const snapShot = await getDocs(counterDoc);
+
+          snapShot.forEach(async(i) => {
+            const c = i.data();
+            if (c.linkedToGlobal) {
+              const cDoc = doc(counterDoc, c.Name);
+              if (c.count === 1) {
+                await updateDoc(cDoc, {count: c.resetAt});
+              }
+              else {
+                await updateDoc(cDoc, {count: increment(-1)});
+              }
+            }
+          });
+          getProject();
+        }
       }
     } catch (e) {
       console.log(e);
