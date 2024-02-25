@@ -59,7 +59,7 @@ export const ProjectHome = () => {
             p: 2,
             backgroundColor: '#E9EBF8'
           }}>
-            <Button onClick={gotoCounters}></Button>
+            <Button onClick={gotoCounters}>Counters</Button>
           </Paper>
         </Grid>
         <Grid item>

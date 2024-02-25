@@ -4,7 +4,7 @@ import React from "react"
 import { useNavigate } from "react-router-dom";
 import { google } from "../FireBase";
 import { mainTheme } from "../themes";
-import { Header } from "../headers/Header";
+import { LoginHeader } from "../headers/LoginHeader";
 
 export const Login = () => {
   const auth = getAuth();
@@ -25,14 +25,14 @@ export const Login = () => {
 
   return (
     <ThemeProvider theme={mainTheme}>
-      <Header/>
+      <LoginHeader/>
       <Paper sx={{
           background: '#E9EBF8',
           p: 2,
           // display: 'flex'
         }}>
         <Typography>Login Page</Typography>
-        <Button onClick={googleSignin}>Google</Button>
+        <Button onClick={googleSignin}>Login with Google</Button>
       </Paper>
     </ThemeProvider>
   )
