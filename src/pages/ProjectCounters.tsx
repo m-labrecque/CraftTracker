@@ -1,4 +1,4 @@
-import { Box, IconButton, Paper, Stack, ThemeProvider, Typography } from "@mui/material"
+import { Box, Container, Grid, IconButton, Paper, Stack, ThemeProvider, Typography } from "@mui/material"
 import { mainTheme } from "../themes"
 import React from "react";
 import { useLocation } from "react-router-dom";
@@ -120,47 +120,48 @@ export const ProjectCounters = () => {
 
   return (
     <ThemeProvider theme={mainTheme}>
-      <Header/>
-      {/* primary counter */}
-      <Stack
-        direction="column"
-        spacing={2}
-      >
-      <Paper sx={{backgroundColor: "#E9EBF8"}}>
-        <Stack
-          direction="row"
-          justifyContent="space-evenly"
-          alignItems="center"
-          spacing={2}
-        >
-          <IconButton size="large" color="primary" sx={{fontSize: '4.5rem'}} onClick={decreasePrimary}>
-            <RemoveCircleOutlineRounded fontSize="inherit"/>
-          </IconButton>
-          <Typography variant="h4">{primaryCounter}</Typography>
-          <IconButton size="large" color="primary" sx={{fontSize: '4.5rem'}} onClick={increasePrimary}>
-            <AddCircleOutlineRounded fontSize="inherit"/>
-          </IconButton>
-        </Stack>
-      </Paper>
-
-      {/* all the other counters (the counters linked to the main counter) */}
-      <Stack
-        direction="row"
-        justifyContent="space-evenly"
-        alignItems="center"
-        spacing={2}
-      >
-      {secondaryCounters.map((c) => (
-        <Box>
-          <Paper sx={{p: 1.5, backgroundColor: "#E9EBF8"}}>
-            <Typography variant="h6">{c.Name}</Typography>
-            <Typography variant="h4">{c.count}</Typography>
-          </Paper>
+      <Box sx={{display: "flex"}}>
+        <Header/>
+        <Box marginTop={10} sx={{ height: '100vh'}}>
+          <Container>
+            <Grid container spacing={2} alignItems="center">
+              {/* primary counter */}
+              <Grid item xs={12}>
+                <Paper sx={{backgroundColor: "#E9EBF8"}}>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-evenly"
+                    alignItems="center"
+                    spacing={2}
+                  >
+                    <IconButton size="large" color="primary" sx={{fontSize: '4.5rem'}} onClick={decreasePrimary}>
+                      <RemoveCircleOutlineRounded fontSize="inherit"/>
+                    </IconButton>
+                    <Typography variant="h4">{primaryCounter}</Typography>
+                    <IconButton size="large" color="primary" sx={{fontSize: '4.5rem'}} onClick={increasePrimary}>
+                      <AddCircleOutlineRounded fontSize="inherit"/>
+                    </IconButton>
+                  </Stack>
+                </Paper>
+              </Grid>
+              <Grid item xs={12}>
+              {/* all the other counters (the counters linked to the main counter) */}
+                <Grid container spacing={2}>
+                  {secondaryCounters.map((c) => (
+                    <Grid item xs={12} sm={6}>
+                      <Paper sx={{p: 1.5, backgroundColor: "#E9EBF8"}}>
+                        <Typography variant="h6">{c.Name}</Typography>
+                        <Typography variant="h4">{c.count}</Typography>
+                      </Paper>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
+            </Grid>
+            <NewCounterPopup name={projectName} getProject={getProject}/>
+          </Container>
         </Box>
-      ))}
-      </Stack>
-      </Stack>
-      <NewCounterPopup name={projectName} getProject={getProject}/>
+      </Box>
     </ThemeProvider>
   )
 }

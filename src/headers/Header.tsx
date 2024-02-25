@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 export const Header = () => {
   return (
     <ThemeProvider theme={mainTheme}>
-      <AppBar>
+      <AppBar position="fixed">
         <Toolbar>
           <Link to='/home'>
             <Button sx={{backgroundColor: "#ffffff"}}>Home</Button>
