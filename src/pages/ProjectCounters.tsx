@@ -148,7 +148,7 @@ export const ProjectCounters = () => {
               {/* all the other counters (the counters linked to the main counter) */}
                 <Grid container spacing={2}>
                   {secondaryCounters.map((c) => (
-                    <Grid item xs={12} sm={6}>
+                    <Grid key={c.Name} item xs={12} sm={6}>
                       <Paper sx={{p: 1.5, backgroundColor: "#E9EBF8"}}>
                         <Typography variant="h6">{c.Name}</Typography>
                         <Typography variant="h4">{c.count}</Typography>

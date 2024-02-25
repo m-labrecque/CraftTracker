@@ -2,7 +2,7 @@ import React from "react"
 import { ThemeProvider } from "@emotion/react"
 import { mainTheme } from "../themes"
 import { Header } from "../headers/Header"
-import { Button, Grid, Paper, Typography } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography } from "@mui/material"
 import { useLocation, useNavigate } from "react-router-dom"
 import { Project } from "../AppBaseTypes"
 import { collection, doc, getDoc } from "firebase/firestore"
@@ -46,31 +46,35 @@ export const ProjectHome = () => {
 
   return (
     <ThemeProvider theme={mainTheme}>
-      <Header/>
-      <Typography>Project Home Page</Typography>
-      <Typography>{name}</Typography>
-      <Grid 
-        container
-        justifyContent="center"
-        spacing={1}
-        >
-        <Grid item>
-          <Paper sx={{
-            p: 2,
-            backgroundColor: '#E9EBF8'
-          }}>
-            <Button onClick={gotoCounters}>Counters</Button>
-          </Paper>
-        </Grid>
-        <Grid item>
-          <Paper sx={{
-            p: 2,
-            backgroundColor: '#E9EBF8'
-          }}>
-            <Typography>Information</Typography>
-          </Paper>
-        </Grid>
-      </Grid>
+      <Box sx={{display: "flex"}}>
+        <Header/>
+        <Box marginTop={10} sx={{height: '100vh'}}>
+          <Typography>Project Home Page</Typography>
+          <Typography>{name}</Typography>
+          <Grid 
+            container
+            justifyContent="center"
+            spacing={1}
+            >
+            <Grid item xs={12} sm={6}>
+              <Paper sx={{
+                p: 2,
+                backgroundColor: '#E9EBF8'
+              }}>
+                <Button onClick={gotoCounters}>Counters</Button>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Paper sx={{
+                p: 2,
+                backgroundColor: '#E9EBF8'
+              }}>
+                <Typography>Information</Typography>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
     </ThemeProvider>
   )
 }

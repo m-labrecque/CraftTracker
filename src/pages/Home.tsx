@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, ThemeProvider, Typography } from "@mui/material";
+import { Box, Button, Grid, Paper, ThemeProvider, Typography } from "@mui/material";
 import { getAuth } from "firebase/auth";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
@@ -48,31 +48,35 @@ export const Home = () => {
 
   return (
     <ThemeProvider theme={mainTheme}>
-      <Header/>
-      <Typography>Home page</Typography>
-      <Grid
-        container
-        justifyContent="center"
-        spacing={2}>
-        <Grid item>
-          <Paper sx={{
-            p: 2,
-            backgroundColor: '#E9EBF8'
-          }}>
-            <Link to={"/projects"}>
-              <Button>Projects</Button>
-            </Link>
-          </Paper>
-        </Grid>
-        <Grid item>
-          <Paper sx={{
-            p: 2,
-            backgroundColor: '#E9EBF8'
-          }}>
-            <Typography>Something else</Typography>
-          </Paper>
-        </Grid>
-      </Grid>
+      <Box sx={{display: "flex"}}>
+        <Header/>
+        <Box marginTop={10} sx={{height: '100vh'}}>
+          <Typography>Home page</Typography>
+          <Grid
+            container
+            justifyContent="center"
+            spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Paper sx={{
+                p: 2,
+                backgroundColor: '#E9EBF8'
+              }}>
+                <Link to={"/projects"}>
+                  <Button>Projects</Button>
+                </Link>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Paper sx={{
+                p: 2,
+                backgroundColor: '#E9EBF8'
+              }}>
+                <Typography>Something else</Typography>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
     </ThemeProvider>
   )
 }

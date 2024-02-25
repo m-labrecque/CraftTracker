@@ -74,40 +74,45 @@ export const Projects = () => {
   
   return (
     <ThemeProvider theme={mainTheme}>
-      <Header/>
-      <Typography>Projects</Typography>
-      <Box display="flex" flexWrap="wrap" justifyContent="space-around">
-      <Grid 
-        container
-        justifyContent="center"
-        spacing={1}
-        >
-        {projects.map((p) => (
-          <Grid key={p.Name} item xs={6} md={8}>
-            <Paper sx={{
-              p: 2,
-              backgroundColor: '#E9EBF8'
-            }}>
-            <Button onClick={() => gotoProject(p.Name)}>{p.Name}</Button>
-            </Paper>
+      <Box sx={{display: "flex"}}>
+        <Header/>
+        <Box marginTop={10} sx={{height: '100vh'}}>
+          <Typography>Projects</Typography>
+          <Box display="flex" flexWrap="wrap" justifyContent="space-around">
+          <Grid 
+            container
+            spacing={1}
+            >
+            {projects.map((p) => (
+              <Grid key={p.Name} item xs={12} sm={6}>
+                <Paper sx={{
+                  p: 2,
+                  backgroundColor: '#E9EBF8'
+                }}>
+                <Button onClick={() => gotoProject(p.Name)}>{p.Name}</Button>
+                </Paper>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-      </Box>
-      <Button onClick={handleOpen}>New Project</Button>
+          </Box>
+          <Button onClick={handleOpen}>New Project</Button>
 
-      {/* popup for creating new project */}
-      <Dialog open={open} onClose={handleClose}>
-        <DialogContent>
-          <TextField 
-            id="Project Name"
-            onChange={handleNameChange}/>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCreate}>Create</Button>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
+          {/* popup for creating new project */}
+          <Dialog open={open} onClose={handleClose}>
+            <DialogContent sx={{backgroundColor: '#E9EBF8'}}>
+              <Typography>Create New Project</Typography>
+              <TextField 
+                id="Project Name"
+                label="Name"
+                onChange={handleNameChange}/>
+            </DialogContent>
+            <DialogActions sx={{backgroundColor: '#E9EBF8'}}>
+              <Button onClick={handleCreate}>Create</Button>
+              <Button onClick={handleClose}>Cancel</Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
+      </Box>
     </ThemeProvider>
   )
 }
