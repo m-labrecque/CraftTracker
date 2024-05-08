@@ -1,0 +1,13 @@
+- change title
+- modify types of all start with lowercase
+- get rid of Projects array
+- make login header have something visable (probaby just have a title)
+- add title to regular header
+- get rid of counter array in projects
+- add in multipiece projects
+  - add field in project type
+  - add in creation popup
+  - create home page for project wiht multiple pieces
+- add reset intervals to Counters
+- add counter setting page/popup
+- 
