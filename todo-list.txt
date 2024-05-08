@@ -1,4 +1,3 @@
-- change title
 - modify types of all start with lowercase
 - get rid of Projects array
 - make login header have something visable (probaby just have a title)
