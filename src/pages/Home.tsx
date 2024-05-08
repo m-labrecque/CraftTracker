@@ -16,7 +16,6 @@ export const Home = () => {
       const user = {
         uid: auth.currentUser?.uid,
         email: auth.currentUser?.email,
-        Projects: []
       };
 
       const updateUser = async() => {
@@ -25,7 +24,7 @@ export const Home = () => {
           const userSnap = await getDoc(userDoc);
           if (userSnap.exists()) {
             const userData = userSnap.data();
-            if (!userData.uid || !userData.Projects || !userData.email) {
+            if (!userData.uid || !userData.email) {
               await setDoc(userDoc, user, {merge: true});
               console.log("User added to user collection");
             }
