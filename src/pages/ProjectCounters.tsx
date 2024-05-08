@@ -26,12 +26,12 @@ export const ProjectCounters = () => {
         const projectDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName);
         const projectSnap = await getDoc(projectDoc);
         const data = projectSnap.data();
-        console.log("got project data");
+        // console.log("got project data");
 
         if (data) {
           setCurrentProject({Name: data.Name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters});
           setPrimaryCounter(data.mainCounterCount);
-          console.log("set all data for project counters");
+          // console.log("set all data for project counters");
 
           const counterDoc = collection(projectDoc, 'secondaryCounters');
           const snapShot = await getDocs(counterDoc);
@@ -63,18 +63,37 @@ export const ProjectCounters = () => {
         const counterDoc = collection(projectDoc, 'secondaryCounters');
         const snapShot = await getDocs(counterDoc);
 
-        snapShot.forEach(async(i) => {
+        // snapShot.forEach(async(i) => {
+        //   const c = i.data();
+        //   if (c.linkedToGlobal) {
+        //     const cDoc = doc(counterDoc, c.Name);
+        //     if (c.count === c.resetAt) {
+        //       await updateDoc(cDoc, {count: 1});
+        //     } 
+        //     else {
+        //       await updateDoc(cDoc, {count: increment(1)});
+        //     }
+        //   }
+        // });
+        // getProject();
+
+        // what is can possibly get changed to
+        const promises = snapShot.docs.map(async(i) => {
           const c = i.data();
+          console.log(c);
           if (c.linkedToGlobal) {
             const cDoc = doc(counterDoc, c.Name);
+            console.log(c.Name + ": " + c.count);
             if (c.count === c.resetAt) {
               await updateDoc(cDoc, {count: 1});
-            } 
+            }
             else {
               await updateDoc(cDoc, {count: increment(1)});
             }
           }
         });
+
+        await Promise.all(promises);
         getProject();
       }
     } catch (e) {
@@ -97,10 +116,27 @@ export const ProjectCounters = () => {
           const counterDoc = collection(projectDoc, 'secondaryCounters');
           const snapShot = await getDocs(counterDoc);
 
-          snapShot.forEach(async(i) => {
+          // snapShot.forEach(async(i) => {
+          //   const c = i.data();
+          //   if (c.linkedToGlobal) {
+          //     const cDoc = doc(counterDoc, c.Name);
+          //     if (c.count === 1) {
+          //       await updateDoc(cDoc, {count: c.resetAt});
+          //     }
+          //     else {
+          //       await updateDoc(cDoc, {count: increment(-1)});
+          //     }
+          //   }
+          // });
+          // getProject();
+
+          // what is can possibly get changed to
+          const promises = snapShot.docs.map(async(i) => {
             const c = i.data();
+            console.log(c);
             if (c.linkedToGlobal) {
               const cDoc = doc(counterDoc, c.Name);
+              console.log(c.Name + ": " + c.count);
               if (c.count === 1) {
                 await updateDoc(cDoc, {count: c.resetAt});
               }
@@ -109,6 +145,8 @@ export const ProjectCounters = () => {
               }
             }
           });
+
+          await Promise.all(promises);
           getProject();
         }
       }
