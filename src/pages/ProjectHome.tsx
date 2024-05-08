@@ -17,7 +17,7 @@ export const ProjectHome = () => {
 
   const [name, setName] = React.useState<string>("");
   const [currentProject, setCurrentProject] = React.useState<Project>();
-  const projectName = location.state?.ProjectName || "";
+  const projectName = location.state?.projectName || "";
 
   const getProject = async() => {
     try {
@@ -28,7 +28,7 @@ export const ProjectHome = () => {
       console.log("got project data");
 
       if (data) {
-        setCurrentProject({Name: data.Name, mainCounterCount: data.mainCounter, otherCounters: data.otherCounters});
+        setCurrentProject({name: data.name, mainCounterCount: data.mainCounter, otherCounters: data.otherCounters});
       }
     } catch (e) {
       console.log(e);
@@ -36,12 +36,12 @@ export const ProjectHome = () => {
   }
 
   React.useEffect(() => {
-    setName(location.state?.ProjectName);
+    setName(location.state?.projectName);
     getProject();
   }, []);
 
   const gotoCounters = () => {
-    navigate('/projectcounters', {state: {ProjectName: name}});
+    navigate('/projectcounters', {state: {projectName: name}});
   }
 
   return (

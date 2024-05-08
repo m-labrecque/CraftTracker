@@ -24,7 +24,7 @@ export const Projects = () => {
     let p: Project[] = [];
     snapShot.forEach((d) => {
       const data = d.data();
-      p.push({Name: data.Name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters});
+      p.push({name: data.Name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters});
     });
     setProjects(p);
     console.log("got projects");
@@ -36,7 +36,7 @@ export const Projects = () => {
 
   function gotoProject(name: string) {
     console.log(name);
-    navigate('/projecthome', {state: {ProjectName: name}});
+    navigate('/projecthome', {state: {projectName: name}});
   }
 
   const handleOpen = () => {
@@ -55,7 +55,7 @@ export const Projects = () => {
     }
     else {
       if (auth.currentUser) {
-        const newProject = {Name: newProjectName, mainCounterCount: 0, otherCounters: []};
+        const newProject = {name: newProjectName, mainCounterCount: 0, otherCounters: []};
 
         const projectsDoc = doc(db, "users", auth.currentUser.uid, "projects", newProjectName);
         await setDoc(projectsDoc, newProject, {merge: true});
@@ -84,12 +84,12 @@ export const Projects = () => {
             spacing={1}
             >
             {projects.map((p) => (
-              <Grid key={p.Name} item xs={12} sm={6}>
+              <Grid key={p.name} item xs={12} sm={6}>
                 <Paper sx={{
                   p: 2,
                   backgroundColor: '#E9EBF8'
                 }}>
-                <Button onClick={() => gotoProject(p.Name)}>{p.Name}</Button>
+                <Button onClick={() => gotoProject(p.name)}>{p.name}</Button>
                 </Paper>
               </Grid>
             ))}

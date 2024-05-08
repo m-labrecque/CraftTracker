@@ -1,17 +1,17 @@
 export interface Project {
-  Name: string
+  name: string
   mainCounterCount: number
   otherCounters: Counter[]
 }
 
 export interface MainCounter {
   count: number
-  Children: Counter[]
+  children: Counter[]
 }
 
 export interface Counter {
-  Name: string
+  name: string
   count: number
-  LinkedToGlobal: boolean
+  linkedToGlobal: boolean
   resetAt: number
 }

@@ -18,7 +18,7 @@ export const ProjectCounters = () => {
   const [currentProject, setCurrentProject] = React.useState<Project>();
   const [primaryCounter, setPrimaryCounter] = React.useState<number>(0);
   const [secondaryCounters, setSecondaryCounters] = React.useState<Counter[]>([]);
-  const projectName = location.state?.ProjectName || "";
+  const projectName = location.state?.projectName || "";
 
   const getProject = async() => {
     try {
@@ -29,7 +29,7 @@ export const ProjectCounters = () => {
         // console.log("got project data");
 
         if (data) {
-          setCurrentProject({Name: data.Name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters});
+          setCurrentProject({name: data.name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters});
           setPrimaryCounter(data.mainCounterCount);
           // console.log("set all data for project counters");
 
@@ -39,7 +39,7 @@ export const ProjectCounters = () => {
           let c: Counter[] = [];
           snapShot.forEach((i) => {
             const data = i.data();
-            c.push({Name: data.Name, count: data.count, LinkedToGlobal: data.linkedToGlobal, resetAt: data.resetAt});
+            c.push({name: data.name, count: data.count, linkedToGlobal: data.linkedToGlobal, resetAt: data.resetAt});
           });
           setSecondaryCounters(c);
           console.log("got counters");
@@ -67,7 +67,7 @@ export const ProjectCounters = () => {
         const promises = snapShot.docs.map(async(i) => {
           const c = i.data();
           if (c.linkedToGlobal) {
-            const cDoc = doc(counterDoc, c.Name);
+            const cDoc = doc(counterDoc, c.name);
             if (c.count === c.resetAt) {
               await updateDoc(cDoc, {count: 1});
             }
@@ -80,6 +80,7 @@ export const ProjectCounters = () => {
         await Promise.all(promises);
         getProject();
       }
+      console.log("increase primary");
     } catch (e) {
       console.log(e);
     }
@@ -104,7 +105,7 @@ export const ProjectCounters = () => {
           const promises = snapShot.docs.map(async(i) => {
             const c = i.data();
             if (c.linkedToGlobal) {
-              const cDoc = doc(counterDoc, c.Name);
+              const cDoc = doc(counterDoc, c.name);
               if (c.count === 1) {
                 await updateDoc(cDoc, {count: c.resetAt});
               }
@@ -118,10 +119,10 @@ export const ProjectCounters = () => {
           getProject();
         }
       }
+      console.log("decrease primary");
     } catch (e) {
       console.log(e);
     }
-    console.log("decrease primary");
   }
 
   return (
@@ -154,9 +155,9 @@ export const ProjectCounters = () => {
               {/* all the other counters (the counters linked to the main counter) */}
                 <Grid container spacing={2}>
                   {secondaryCounters.map((c) => (
-                    <Grid key={c.Name} item xs={12} sm={6}>
+                    <Grid key={c.name} item xs={12} sm={6}>
                       <Paper sx={{p: 1.5, backgroundColor: "#E9EBF8"}}>
-                        <Typography variant="h6">{c.Name}</Typography>
+                        <Typography variant="h6">{c.name}</Typography>
                         <Typography variant="h4">{c.count}</Typography>
                       </Paper>
                     </Grid>
