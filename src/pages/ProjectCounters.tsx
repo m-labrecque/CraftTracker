@@ -9,6 +9,7 @@ import { getAuth } from "firebase/auth";
 import { Header } from "../headers/Header";
 import { AddCircleOutlineRounded, RemoveCircleOutlineRounded } from "@mui/icons-material";
 import { NewCounterPopup } from "../projectComponents/NewCounterPopup";
+import { SecondaryCounter } from "../projectComponents/SecondaryCounter";
 
 
 export const ProjectCounters = () => {  
@@ -155,12 +156,7 @@ export const ProjectCounters = () => {
               {/* all the other counters (the counters linked to the main counter) */}
                 <Grid container spacing={2}>
                   {secondaryCounters.map((c) => (
-                    <Grid key={c.name} item xs={12} sm={6}>
-                      <Paper sx={{p: 1.5, backgroundColor: "#E9EBF8"}}>
-                        <Typography variant="h6">{c.name}</Typography>
-                        <Typography variant="h4">{c.count}</Typography>
-                      </Paper>
-                    </Grid>
+                    <SecondaryCounter name={c.name} count={c.count}/>
                   ))}
                 </Grid>
               </Grid>
