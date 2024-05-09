@@ -6,10 +6,6 @@ project
    -> piece creation pop-up
 
 Counters
- - make secondary counters their own component
-   -> keep map in same spot
-   -> just have them in hteir own spot
-   -> cause they will each have their own popup
  - add increase intervals
    -> fields in type
    -> creation popup

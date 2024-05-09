@@ -1,4 +1,5 @@
 import { Grid, Paper, Typography } from "@mui/material"
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export const SecondaryCounter = ({name, count}: {name: string, count: number}) => {
   return (

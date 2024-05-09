@@ -3,7 +3,7 @@ import React from "react"
 import { mainTheme } from "../themes"
 import { Link, useNavigate } from "react-router-dom"
 import { getAuth, signOut } from "firebase/auth"
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 
 export const Header = () => {
   const auth = getAuth();
@@ -33,10 +33,10 @@ export const Header = () => {
       <AppBar position="fixed">
         <Toolbar sx = {{display: 'flex', justifyContent: 'space-between'}}>
           <IconButton
-            size="small"
+            size="medium"
             sx={{color: "#E9EBF8"}}
             onClick={(e) => handleMenuOpen(e)}
-          ><MenuIcon/></IconButton>
+          ><MenuRoundedIcon/></IconButton>
           <Menu
             id="menu-appbar"
             anchorEl={anchorEl}

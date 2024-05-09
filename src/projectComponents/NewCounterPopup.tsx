@@ -1,9 +1,10 @@
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, FormControlLabel, FormGroup, Stack, Switch, TextField, ThemeProvider, Typography } from "@mui/material"
+import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, FormControlLabel, FormGroup, IconButton, Stack, Switch, TextField, ThemeProvider, Typography } from "@mui/material"
 import { mainTheme } from "../themes"
 import React from "react"
 import { getAuth } from "firebase/auth"
 import { doc, setDoc } from "firebase/firestore"
 import { db } from "../FireBase"
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 export const NewCounterPopup = ({name, getProject}: {name: string, getProject: () => void}) => {
   const auth = getAuth();
@@ -11,7 +12,10 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
   const [open, setOpen] = React.useState<boolean>(false);
   const [counterName, setCounterName] = React.useState<string>("");
   const [linkedToGlobal, setLinkedToGlobal] = React.useState<boolean>(true);
+  const [doesResets, setDoesResets] = React.useState<boolean>(false);
   const [resetNumber, setResetNumber] = React.useState<string>("");
+  const [doesInterval, setDoesInterval] = React.useState<boolean>(false);
+  const [increaseInterval, setIncreaseInterval] = React.useState<string>("");
 
   const handleOpen = () => {
     console.log("open");
@@ -21,6 +25,9 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
   const handleClose = () => {
     console.log("close");
     setOpen(false);
+    setLinkedToGlobal(true);
+    setDoesResets(false);
+    setDoesInterval(false);
   }
   
   const handleCreate = async() => {
@@ -49,44 +56,80 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
     setCounterName(event.target.value);
   }
 
-  const handleResetAtChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setResetNumber(event.target.value);
-  }
-
   const handleLinkedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLinkedToGlobal(event.target.checked);
   }
 
+  const handleResetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDoesResets(event.target.checked);
+    console.log(event.target.checked);
+  }
+
+  const handleResetAtChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setResetNumber(event.target.value);
+  }
+
+  const handleIntervalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDoesInterval(event.target.checked);
+    console.log(event.target.checked);
+  }
+
+  const handleIncreaseIntervalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIncreaseInterval(event.target.value);
+    console.log(event.target.value);
+  }
+  
   return (
     <ThemeProvider theme={mainTheme}>
       <Button onClick={handleOpen}>Add New Counter</Button>
 
       <Dialog open={open} onClose={handleClose} >
         <DialogContent sx={{backgroundColor: '#E9EBF8'}}>
-          <Stack>
-            <Typography>Create New Counter</Typography>
+          <Stack spacing={1}>
+            <Stack direction="row" justifyContent="space-between">
+            <Typography paddingTop="3px">Create New Counter</Typography>
+              <IconButton size="small" onClick={handleClose}>
+                <CloseRoundedIcon fontSize="small"/>
+              </IconButton>
+            </Stack>
             <TextField 
               id="counter-name"
               label="Name"
               onChange={handleNameChange}
-              variant="standard"
-            />
-            <TextField
-              id="reset-at"
-              label="Reset Counter At"
-              onChange={handleResetAtChange}
-              variant="standard"
+              variant="outlined"
+              size="small"
             />
             <FormGroup>
               {/* <FormControlLabel control={<Checkbox />} label="Link with primary counter" /> */}
               <FormControlLabel control={<Switch checked={linkedToGlobal} onChange={handleLinkedChange}/>} label="Link with primary counter" />
+              <FormControlLabel control={<Switch checked={doesResets} onChange={handleResetChange}/>} label="Resets" />
             </FormGroup>
+            {doesResets && <Box>
+              <TextField
+              id="reset-at"
+              label="Reset Counter At"
+              onChange={handleResetAtChange}
+              variant="outlined"
+              size="small"
+            />
+            <FormGroup>
+              <FormControlLabel control={<Switch checked={doesInterval} onChange={handleIntervalChange}/>} label="Custom Increase Interval" />
+            </FormGroup>
+            {doesInterval && <Box>
+            <TextField
+              id="increase-interval"
+              label="Increase Interval"
+              onChange={handleIncreaseIntervalChange}
+              variant="outlined"
+              size="small"
+            />
+            </Box>}
+            
+            </Box>
+            }
+            <Button onClick={handleCreate}>Create</Button>
           </Stack>
         </DialogContent>
-        <DialogActions sx={{backgroundColor: '#E9EBF8'}}>
-          <Button onClick={handleCreate}>Create</Button>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
       </Dialog>
 
     </ThemeProvider>
