@@ -40,8 +40,8 @@ export const ProjectCounters = () => {
           let c: Counter[] = [];
           snapShot.forEach((i) => {
             const data = i.data();
-            c.push({name: data.name, count: data.count, linkedToGlobal: data.linkedToGlobal, resetAt: data.resetAt,
-               increaseInterval: data.increaseInterval, sinceLastIncrease: data.sinceLastIncrease});
+            c.push({name: data.name, count: data.count, linkedToGlobal: data.linkedToGlobal, doesReset: data.doesReset, 
+                    resetAt: data.resetAt, doesInterval: data.doesInterval, increaseInterval: data.increaseInterval, sinceLastIncrease: data.sinceLastIncrease});
           });
           setSecondaryCounters(c);
           console.log("got counters");

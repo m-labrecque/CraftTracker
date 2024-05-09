@@ -12,7 +12,9 @@ export interface Counter {
   name: string
   count: number
   linkedToGlobal: boolean
+  doesReset: boolean
   resetAt: number
+  doesInterval: boolean
   increaseInterval: number
   sinceLastIncrease: number
 }

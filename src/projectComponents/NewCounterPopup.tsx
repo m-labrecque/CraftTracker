@@ -12,7 +12,7 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
   const [open, setOpen] = React.useState<boolean>(false);
   const [counterName, setCounterName] = React.useState<string>("");
   const [linkedToGlobal, setLinkedToGlobal] = React.useState<boolean>(true);
-  const [doesResets, setDoesResets] = React.useState<boolean>(false);
+  const [doesReset, setDoesReset] = React.useState<boolean>(false);
   const [resetNumber, setResetNumber] = React.useState<string>("");
   const [doesInterval, setDoesInterval] = React.useState<boolean>(false);
   const [increaseInterval, setIncreaseInterval] = React.useState<string>("");
@@ -26,26 +26,38 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
     console.log("close");
     setOpen(false);
     setLinkedToGlobal(true);
-    setDoesResets(false);
+    setDoesReset(false);
     setDoesInterval(false);
   }
   
   const handleCreate = async() => {
     try {
       if (auth.currentUser) {
-        const reset = parseInt(resetNumber);
-        if (isNaN(reset)) { 
-          console.log("not a number");
-          alert("Error: reset number is not a number.")
+        var reset = -1;
+        var increaseNumber = 1;
+        if (doesReset) {
+          reset = parseInt(resetNumber);
+          if (isNaN(reset)) {
+            console.log("reset number is not a number");
+            alert("Error: reset number is not a number.");
+          }
+          
+          if (doesInterval) {
+            increaseNumber = parseInt(increaseInterval);
+            if (isNaN(increaseNumber)) {
+              console.log("increase interval is not a number");
+              alert("Error: increase interval is not a number.");
+            }
+          }
         }
-        else {
-          const newCounter = {name: counterName, count: 0, linkedToGlobal: linkedToGlobal, resetAt: reset};
-          const counterDoc = doc(db, 'users', auth.currentUser.uid, 'projects', name, 'secondaryCounters', counterName);
-          await setDoc(counterDoc, newCounter, {merge: true});
-          console.log("create");
-          setOpen(false);
-          getProject();
-        }
+
+        const newCounter = {name: counterName, count: 0, linkedToGlobal: linkedToGlobal, doesReset: doesReset, 
+                            resetAt: reset, doesInterval: doesInterval, increaseInterval: increaseNumber, sinceLastIncrease: 0};
+        const counterDoc = doc(db, 'users', auth.currentUser.uid, 'projects', name, 'secondaryCounters', counterName);
+        await setDoc(counterDoc, newCounter, {merge: true});
+        console.log("create");
+        setOpen(false);
+        getProject();
       }
     } catch (e) {
       console.log(e);
@@ -61,7 +73,7 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
   }
 
   const handleResetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDoesResets(event.target.checked);
+    setDoesReset(event.target.checked);
     console.log(event.target.checked);
   }
 
@@ -102,9 +114,9 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
             <FormGroup>
               {/* <FormControlLabel control={<Checkbox />} label="Link with primary counter" /> */}
               <FormControlLabel control={<Switch checked={linkedToGlobal} onChange={handleLinkedChange}/>} label="Link with primary counter" />
-              <FormControlLabel control={<Switch checked={doesResets} onChange={handleResetChange}/>} label="Resets" />
+              <FormControlLabel control={<Switch checked={doesReset} onChange={handleResetChange}/>} label="Resets" />
             </FormGroup>
-            {doesResets && <Box>
+            {doesReset && <Box>
               <TextField
               id="reset-at"
               label="Reset Counter At"
@@ -124,7 +136,7 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
               size="small"
             />
             </Box>}
-            
+
             </Box>
             }
             <Button onClick={handleCreate}>Create</Button>

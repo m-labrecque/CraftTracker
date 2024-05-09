@@ -7,8 +7,7 @@ project
 
 Counters
  - add increase intervals
-   -> fields in type
-   -> creation popup
+   -> add to handle create
    -> increase support
    -> decrease support
  - settings pop-up
