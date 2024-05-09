@@ -24,7 +24,7 @@ export const Projects = () => {
     let p: Project[] = [];
     snapShot.forEach((d) => {
       const data = d.data();
-      p.push({name: data.Name, mainCounterCount: data.mainCounterCount});
+      p.push({name: data.name, mainCounterCount: data.mainCounterCount});
     });
     setProjects(p);
     console.log("got projects");
@@ -55,7 +55,7 @@ export const Projects = () => {
     }
     else {
       if (auth.currentUser) {
-        const newProject = {name: newProjectName, mainCounterCount: 0, otherCounters: []};
+        const newProject = {name: newProjectName, mainCounterCount: 0};
 
         const projectsDoc = doc(db, "users", auth.currentUser.uid, "projects", newProjectName);
         await setDoc(projectsDoc, newProject, {merge: true});
