@@ -24,7 +24,7 @@ export const Projects = () => {
     let p: Project[] = [];
     snapShot.forEach((d) => {
       const data = d.data();
-      p.push({name: data.Name, mainCounterCount: data.mainCounterCount, otherCounters: data.otherCounters});
+      p.push({name: data.Name, mainCounterCount: data.mainCounterCount});
     });
     setProjects(p);
     console.log("got projects");
