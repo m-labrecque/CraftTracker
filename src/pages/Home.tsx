@@ -50,7 +50,6 @@ export const Home = () => {
       <Box sx={{display: "flex"}}>
         <Header/>
         <Box marginTop={10} sx={{height: '100vh'}}>
-          <Typography>Home page</Typography>
           <Grid
             container
             justifyContent="center"

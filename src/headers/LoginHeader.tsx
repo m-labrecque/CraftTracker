@@ -9,7 +9,7 @@ export const LoginHeader = () => {
       <AppBar>
         <Toolbar>
           <Container>
-            <Typography variant="h5">Craft Tracker</Typography>
+            <Typography color="#AAADBC" variant="h5">Craft Tracker</Typography>
           </Container>
         </Toolbar>
       </AppBar>

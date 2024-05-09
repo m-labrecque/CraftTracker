@@ -1,4 +1,3 @@
-- add title to regular header
 - get rid of counter array in projects
 - add in multipiece projects
   - add field in project type
