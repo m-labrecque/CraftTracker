@@ -1,4 +1,4 @@
-import { AppBar, Container, ThemeProvider, Toolbar, Typography } from "@mui/material"
+import { AppBar, Button, Container, ThemeProvider, Toolbar, Typography } from "@mui/material"
 import React from "react"
 import { mainTheme } from "../themes"
 
@@ -8,7 +8,7 @@ export const LoginHeader = () => {
       <AppBar>
         <Toolbar>
           <Container>
-            <Typography color="#AAADBC" variant="h5">Craft Tracker</Typography>
+            <Button sx={{color: "#E9EBF8"}} disableRipple><Typography variant="h5">Craft Tracker</Typography></Button>
           </Container>
         </Toolbar>
       </AppBar>
