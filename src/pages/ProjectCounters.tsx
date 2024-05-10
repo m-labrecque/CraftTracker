@@ -65,16 +65,41 @@ export const ProjectCounters = () => {
         const counterDoc = collection(projectDoc, 'secondaryCounters');
         const snapShot = await getDocs(counterDoc);
 
-        // what is can possibly get changed to
         const promises = snapShot.docs.map(async(i) => {
           const c = i.data();
           if (c.linkedToGlobal) {
             const cDoc = doc(counterDoc, c.name);
-            if (c.count === c.resetAt) {
-              await updateDoc(cDoc, {count: 1});
+            
+            if (c.doesInterval) {
+              if (c.sinceLastIncrease === c.increaseInterval-1) {
+                if (c.doesReset) {
+                  if (c.count === c.resetAt) {
+                    await updateDoc(cDoc, {count: 1, sinceLastIncrease: 0});
+                  }
+                  else {
+                    await updateDoc(cDoc, {count: increment(1), sinceLastIncrease: 0});
+                  }
+                }
+                else {
+                  await updateDoc(cDoc, {count: increment(1), sinceLastIncrease: 0});
+                }
+              }
+              else {
+                await updateDoc(cDoc, {sinceLastIncrease: increment(1)});
+              }
             }
             else {
-              await updateDoc(cDoc, {count: increment(1)});
+              if (c.doesReset) {
+                if (c.count === c.resetAt) {
+                  await updateDoc(cDoc, {count: 1});
+                }
+                else {
+                  await updateDoc(cDoc, {count: increment(1)});
+                }
+              }
+              else {
+                await updateDoc(cDoc, {count: increment(1)});
+              }
             }
           }
         });

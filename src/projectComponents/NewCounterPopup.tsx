@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, FormControlLabel, FormGroup, IconButton, Stack, Switch, TextField, ThemeProvider, Typography } from "@mui/material"
+import { Box, Button, Dialog, DialogContent, FormControlLabel, FormGroup, IconButton, Stack, Switch, TextField, ThemeProvider, Typography } from "@mui/material"
 import { mainTheme } from "../themes"
 import React from "react"
 import { getAuth } from "firebase/auth"
@@ -35,29 +35,35 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
       if (auth.currentUser) {
         var reset = -1;
         var increaseNumber = 1;
+        var noError = true;
+
         if (doesReset) {
           reset = parseInt(resetNumber);
           if (isNaN(reset)) {
             console.log("reset number is not a number");
             alert("Error: reset number is not a number.");
-          }
-          
-          if (doesInterval) {
-            increaseNumber = parseInt(increaseInterval);
-            if (isNaN(increaseNumber)) {
-              console.log("increase interval is not a number");
-              alert("Error: increase interval is not a number.");
-            }
+            noError = false;
           }
         }
-
-        const newCounter = {name: counterName, count: 0, linkedToGlobal: linkedToGlobal, doesReset: doesReset, 
-                            resetAt: reset, doesInterval: doesInterval, increaseInterval: increaseNumber, sinceLastIncrease: 0};
-        const counterDoc = doc(db, 'users', auth.currentUser.uid, 'projects', name, 'secondaryCounters', counterName);
-        await setDoc(counterDoc, newCounter, {merge: true});
-        console.log("create");
-        setOpen(false);
-        getProject();
+        
+        if (doesInterval) {
+          increaseNumber = parseInt(increaseInterval);
+          if (isNaN(increaseNumber)) {
+            console.log("increase interval is not a number");
+            alert("Error: increase interval is not a number.");
+            noError = false;
+          }
+        }
+        
+        if (noError) {
+          const newCounter = {name: counterName, count: 0, linkedToGlobal: linkedToGlobal, doesReset: doesReset, 
+                              resetAt: reset, doesInterval: doesInterval, increaseInterval: increaseNumber, sinceLastIncrease: 0};
+          const counterDoc = doc(db, 'users', auth.currentUser.uid, 'projects', name, 'secondaryCounters', counterName);
+          await setDoc(counterDoc, newCounter, {merge: true});
+          console.log("create");
+          setOpen(false);
+          getProject();
+        }
       }
     } catch (e) {
       console.log(e);
@@ -74,7 +80,6 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
 
   const handleResetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDoesReset(event.target.checked);
-    console.log(event.target.checked);
   }
 
   const handleResetAtChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,18 +88,15 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
 
   const handleIntervalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDoesInterval(event.target.checked);
-    console.log(event.target.checked);
   }
 
   const handleIncreaseIntervalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIncreaseInterval(event.target.value);
-    console.log(event.target.value);
   }
   
   return (
     <ThemeProvider theme={mainTheme}>
       <Button onClick={handleOpen}>Add New Counter</Button>
-
       <Dialog open={open} onClose={handleClose} >
         <DialogContent sx={{backgroundColor: '#E9EBF8'}}>
           <Stack spacing={1}>
@@ -124,9 +126,12 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
               variant="outlined"
               size="small"
             />
+                        </Box>
+            }
             <FormGroup>
               <FormControlLabel control={<Switch checked={doesInterval} onChange={handleIntervalChange}/>} label="Custom Increase Interval" />
             </FormGroup>
+
             {doesInterval && <Box>
             <TextField
               id="increase-interval"
@@ -137,8 +142,6 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
             />
             </Box>}
 
-            </Box>
-            }
             <Button onClick={handleCreate}>Create</Button>
           </Stack>
         </DialogContent>
