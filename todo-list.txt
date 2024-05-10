@@ -6,10 +6,6 @@ project
    -> piece creation pop-up
 
 Counters
- - add increase intervals
-   -> add to handle create
-   -> increase support
-   -> decrease support
  - settings pop-up
    -> add button to secondary counter component
    -> pop-up opens

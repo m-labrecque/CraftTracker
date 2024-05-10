@@ -1,7 +1,6 @@
-import { AppBar, Box, Button, Container, IconButton, ThemeProvider, Toolbar, Typography } from "@mui/material"
+import { AppBar, Container, ThemeProvider, Toolbar, Typography } from "@mui/material"
 import React from "react"
 import { mainTheme } from "../themes"
-import { Link } from "react-router-dom"
 
 export const LoginHeader = () => {
   return (

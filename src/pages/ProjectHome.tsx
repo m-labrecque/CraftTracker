@@ -5,7 +5,7 @@ import { Header } from "../headers/Header"
 import { Box, Button, Grid, Paper, Typography } from "@mui/material"
 import { useLocation, useNavigate } from "react-router-dom"
 import { Project } from "../AppBaseTypes"
-import { collection, doc, getDoc } from "firebase/firestore"
+import { doc, getDoc } from "firebase/firestore"
 import { db } from "../FireBase"
 import { getAuth } from "firebase/auth"
 

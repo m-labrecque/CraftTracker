@@ -1,4 +1,4 @@
-import { Button, Card, Paper, ThemeProvider, Typography } from "@mui/material";
+import { Button, Paper, ThemeProvider, Typography } from "@mui/material";
 import { getAuth, signInWithPopup } from "firebase/auth"
 import React from "react"
 import { useNavigate } from "react-router-dom";
