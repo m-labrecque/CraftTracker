@@ -207,7 +207,7 @@ export const ProjectCounters = () => {
               {/* all the other counters (the counters linked to the main counter) */}
                 <Grid container spacing={2}>
                   {secondaryCounters.map((c) => (
-                    <SecondaryCounter name={c.name} count={c.count}/>
+                    <SecondaryCounter name={c.name} count={c.count} projectName={projectName}/>
                   ))}
                 </Grid>
               </Grid>
