@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogContent, FormControlLabel, FormGroup, IconButton, Stack, Switch, TextField, ThemeProvider, Typography } from "@mui/material"
+import { Button, Checkbox, Dialog, DialogContent, FormControlLabel, FormGroup, IconButton, Stack, Switch, TextField, ThemeProvider, Typography } from "@mui/material"
 import { mainTheme } from "../themes"
 import React from "react"
 import { getAuth } from "firebase/auth"
@@ -114,39 +114,35 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
               size="small"
             />
             <FormGroup>
-              {/* <FormControlLabel control={<Checkbox />} label="Link with primary counter" /> */}
+              {/* <FormControlLabel control={<Checkbox checked={linkedToGlobal} onChange={handleLinkedChange}/>} label="Link with primary counter" /> */}
               <FormControlLabel control={<Switch checked={linkedToGlobal} onChange={handleLinkedChange}/>} label="Link with primary counter" />
               <FormControlLabel control={<Switch checked={doesReset} onChange={handleResetChange}/>} label="Resets" />
             </FormGroup>
-            {doesReset && <Box>
+            {doesReset &&
               <TextField
               id="reset-at"
               label="Reset Counter At"
               onChange={handleResetAtChange}
               variant="outlined"
               size="small"
-            />
-                        </Box>
-            }
+            />}
+
             <FormGroup>
               <FormControlLabel control={<Switch checked={doesInterval} onChange={handleIntervalChange}/>} label="Custom Increase Interval" />
             </FormGroup>
-
-            {doesInterval && <Box>
+            {doesInterval && 
             <TextField
               id="increase-interval"
               label="Increase Interval"
               onChange={handleIncreaseIntervalChange}
               variant="outlined"
               size="small"
-            />
-            </Box>}
+            />}
 
             <Button onClick={handleCreate}>Create</Button>
           </Stack>
         </DialogContent>
       </Dialog>
-
     </ThemeProvider>
   )
 }

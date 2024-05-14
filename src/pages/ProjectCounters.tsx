@@ -30,7 +30,7 @@ export const ProjectCounters = () => {
         // console.log("got project data");
 
         if (data) {
-          setCurrentProject({name: data.name, mainCounterCount: data.mainCounterCount});
+          setCurrentProject({name: data.name, mainCounterCount: data.mainCounterCount, multiPiece: data.multiPiece});
           setPrimaryCounter(data.mainCounterCount);
           // console.log("set all data for project counters");
 

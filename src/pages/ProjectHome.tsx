@@ -28,7 +28,7 @@ export const ProjectHome = () => {
       console.log("got project data");
 
       if (data) {
-        setCurrentProject({name: data.name, mainCounterCount: data.mainCounter});
+        setCurrentProject({name: data.name, mainCounterCount: data.mainCounter, multiPiece: data.multiPiece});
       }
     } catch (e) {
       console.log(e);

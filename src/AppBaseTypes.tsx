@@ -1,6 +1,7 @@
 export interface Project {
   name: string
   mainCounterCount: number
+  multiPiece: boolean
 }
 
 export interface MainCounter {
