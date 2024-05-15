@@ -6,7 +6,7 @@ import { doc, setDoc } from "firebase/firestore"
 import { db } from "../FireBase"
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-export const NewCounterPopup = ({name, getProject}: {name: string, getProject: () => void}) => {
+export const NewCounterPopup = ({name, pName, getProject}: {name: string, pName: string, getProject: () => void}) => {
   const auth = getAuth();
 
   const [open, setOpen] = React.useState<boolean>(false);
@@ -58,8 +58,17 @@ export const NewCounterPopup = ({name, getProject}: {name: string, getProject: (
         if (noError) {
           const newCounter = {name: counterName, count: 0, linkedToGlobal: linkedToGlobal, doesReset: doesReset, 
                               resetAt: reset, doesInterval: doesInterval, increaseInterval: increaseNumber, sinceLastIncrease: 0};
-          const counterDoc = doc(db, 'users', auth.currentUser.uid, 'projects', name, 'secondaryCounters', counterName);
-          await setDoc(counterDoc, newCounter, {merge: true});
+
+          if (pName === "") {
+            console.log("created counter for single");
+            const counterDoc = doc(db, 'users', auth.currentUser.uid, 'projects', name, 'secondaryCounters', counterName);
+            await setDoc(counterDoc, newCounter, {merge: true});
+          }
+          else {
+            console.log("created counter for multiple")
+            const counterDoc = doc(db, 'users', auth.currentUser.uid, 'projects', name, 'pieces', pName, 'secondaryCounters', counterName);
+            await setDoc(counterDoc, newCounter, {merge: true});
+          }
           console.log("create");
           setOpen(false);
           getProject();

@@ -198,6 +198,7 @@ export const ProjectCounters = () => {
         <Header/>
         <Box marginTop={10} sx={{ height: '100vh'}}>
           <Container>
+            <Typography>{projectName} {pieceName && " - " + pieceName}</Typography>
             <Grid container spacing={2} alignItems="center">
               {/* primary counter */}
               <Grid item xs={12}>
@@ -227,7 +228,7 @@ export const ProjectCounters = () => {
                 </Grid>
               </Grid>
             </Grid>
-            <NewCounterPopup name={projectName} getProject={getProject}/>
+            <NewCounterPopup name={projectName} pName={pieceName} getProject={getProject}/>
           </Container>
         </Box>
       </Box>
