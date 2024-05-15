@@ -62,19 +62,12 @@ export const ProjectHome = () => {
             justifyContent="center"
             spacing={1}
             >
-            {multiplePieces && 
-              <Grid item xs={12} sm={6}>
-                <Paper sx={{ p: 2, backgroundColor: '#E9EBF8'}}>
-                  <Button onClick={gotoPieces}>Pieces</Button>
-                </Paper>
-              </Grid>}
-            {!multiplePieces &&
-              <Grid item xs={12} sm={6}>
-                <Paper sx={{ p: 2, backgroundColor: '#E9EBF8'}}>
-                  <Button onClick={gotoCounters}>Counters</Button>
-                </Paper>
-              </Grid>
-            }
+            <Grid item xs={12} sm={6}>
+              <Paper sx={{ p: 2, backgroundColor: '#E9EBF8'}}>
+                {!multiplePieces && <Button onClick={gotoCounters}>Counters</Button>}
+                {multiplePieces && <Button onClick={gotoPieces}>Pieces</Button>}
+              </Paper>
+            </Grid>
             <Grid item xs={12} sm={6}>
               <Paper sx={{
                 p: 2,

@@ -3,7 +3,7 @@ import { mainTheme } from "../themes"
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { Counter, Project } from "../AppBaseTypes";
-import { collection, doc, getDoc, getDocs, increment, updateDoc } from "firebase/firestore";
+import { DocumentReference, collection, doc, getDoc, getDocs, increment, updateDoc } from "firebase/firestore";
 import { db } from "../FireBase";
 import { getAuth } from "firebase/auth";
 import { Header } from "../headers/Header";
@@ -20,19 +20,34 @@ export const ProjectCounters = () => {
   const [primaryCounter, setPrimaryCounter] = React.useState<number>(0);
   const [secondaryCounters, setSecondaryCounters] = React.useState<Counter[]>([]);
   const projectName = location.state?.projectName || "";
+  const pieceName = location.state?.pieceName || "";
+
+  function getProjectOrPiece(): DocumentReference {
+    console.log("project or piece");
+    console.log(pieceName);
+    if (pieceName === "") {
+      console.log("single");
+      return doc(db, 'users', auth.currentUser?.uid || "", 'projects', projectName);
+    }
+    else {
+      console.log("multiple");
+      return doc(db, 'users', auth.currentUser?.uid || "", 'projects', projectName, 'pieces', pieceName);
+    }
+  }
 
   const getProject = async() => {
     try {
       if (auth.currentUser) {
-        const projectDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName);
+        console.log("get project")
+        const projectDoc = getProjectOrPiece();
         const projectSnap = await getDoc(projectDoc);
         const data = projectSnap.data();
-        // console.log("got project data");
+        console.log("got project data");
 
         if (data) {
           setCurrentProject({name: data.name, mainCounterCount: data.mainCounterCount, multiPiece: data.multiPiece});
           setPrimaryCounter(data.mainCounterCount);
-          // console.log("set all data for project counters");
+          console.log("set all data for project counters");
 
           const counterDoc = collection(projectDoc, 'secondaryCounters');
           const snapShot = await getDocs(counterDoc);

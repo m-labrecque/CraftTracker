@@ -83,6 +83,11 @@ export const ProjectPieces = () => {
     setNewPieceName(event.target.value);
   }
 
+  const gotoCounters = (n: string) => {
+    console.log(n);
+    navigate('/projectcounters', {state: {projectName: projectName, pieceName: n}})
+  }
+
   return (
     <ThemeProvider theme={mainTheme}>
       <Box sx={{display: "flex"}}>
@@ -93,7 +98,7 @@ export const ProjectPieces = () => {
             {pieces.map((p) => (
               <Grid key={p.name} item xs={12} sm={6}>
                 <Paper sx={{p: 2, backgroundColor: '#E9EBF8'}}>
-                  <Button>{p.name}</Button>
+                  <Button onClick={() => gotoCounters(p.name)}>{p.name}</Button>
                 </Paper>  
               </Grid>
             ))}
