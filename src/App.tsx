@@ -6,6 +6,7 @@ import { Home } from './pages/Home';
 import { Projects } from './pages/Projects';
 import { ProjectHome } from './pages/ProjectHome';
 import { ProjectCounters } from './pages/ProjectCounters';
+import { ProjectPieces } from './pages/ProjectPieces';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path='/projects' element={<Projects />} />
             <Route path='/projecthome' element={<ProjectHome />} />
             <Route path='/projectcounters' element={<ProjectCounters />} />
+            <Route path='/projectpieces' element={<ProjectPieces />} />
           </Routes>
         </header>
       </div>

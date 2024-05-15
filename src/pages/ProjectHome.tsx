@@ -18,6 +18,7 @@ export const ProjectHome = () => {
   const [name, setName] = React.useState<string>("");
   const [currentProject, setCurrentProject] = React.useState<Project>();
   const projectName = location.state?.projectName || "";
+  const [multiplePieces, setMultiplePieces] = React.useState<boolean>(false);
 
   const getProject = async() => {
     try {
@@ -29,6 +30,7 @@ export const ProjectHome = () => {
 
       if (data) {
         setCurrentProject({name: data.name, mainCounterCount: data.mainCounter, multiPiece: data.multiPiece});
+        setMultiplePieces(data.multiPiece);
       }
     } catch (e) {
       console.log(e);
@@ -44,6 +46,10 @@ export const ProjectHome = () => {
     navigate('/projectcounters', {state: {projectName: name}});
   }
 
+  const gotoPieces = () => {
+    navigate('/projectpieces', {state: {projectName: name}});
+  }
+
   return (
     <ThemeProvider theme={mainTheme}>
       <Box sx={{display: "flex"}}>
@@ -56,14 +62,19 @@ export const ProjectHome = () => {
             justifyContent="center"
             spacing={1}
             >
-            <Grid item xs={12} sm={6}>
-              <Paper sx={{
-                p: 2,
-                backgroundColor: '#E9EBF8'
-              }}>
-                <Button onClick={gotoCounters}>Counters</Button>
-              </Paper>
-            </Grid>
+            {multiplePieces && 
+              <Grid item xs={12} sm={6}>
+                <Paper sx={{ p: 2, backgroundColor: '#E9EBF8'}}>
+                  <Button onClick={gotoPieces}>Pieces</Button>
+                </Paper>
+              </Grid>}
+            {!multiplePieces &&
+              <Grid item xs={12} sm={6}>
+                <Paper sx={{ p: 2, backgroundColor: '#E9EBF8'}}>
+                  <Button onClick={gotoCounters}>Counters</Button>
+                </Paper>
+              </Grid>
+            }
             <Grid item xs={12} sm={6}>
               <Paper sx={{
                 p: 2,

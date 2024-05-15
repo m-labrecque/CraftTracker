@@ -12,3 +12,9 @@ Counters
    -> unlink/relink from global
    -> change reset number
    -> change interval of increase
+
+
+-> add checks for duplicate names (everywhere)
+  - project adding
+  - project piece
+  - counters

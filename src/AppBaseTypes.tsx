@@ -4,6 +4,11 @@ export interface Project {
   multiPiece: boolean
 }
 
+export interface Piece {
+  name: string
+  mainCounterCount: number
+}
+
 export interface MainCounter {
   count: number
   children: Counter[]
