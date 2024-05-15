@@ -4,8 +4,11 @@ import { useState } from "react";
 import { getAuth } from "firebase/auth";
 import { mainTheme } from "../themes";
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { Counter } from "../AppBaseTypes";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../FireBase";
 
-export const SecondaryCounter = ({name, count, projectName}: {name: string, count: number, projectName: string}) => {
+export const SecondaryCounter = ({name, count, projectName, pieceName}: {name: string, count: number, projectName: string, pieceName: string}) => {
   const auth = getAuth();
 
   const [open, setOpen] = useState<boolean>(false);
@@ -15,13 +18,31 @@ export const SecondaryCounter = ({name, count, projectName}: {name: string, coun
   const [doesInterval, setDoesInterval] = useState<boolean>(false);
   const [increaseInterval, setIncreaseInterval] = useState<string>("");
 
-  const handleOpen = () => {
+  const handleOpen = async() => {
     console.log("open");
-    // get counter data
+    if (auth.currentUser) {
+      // get counter data
+      var c: Counter;
+      var counterDoc;
+      if (pieceName === "") {
+        counterDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName, 'secondaryCounters', name);
+      }
+      else {
+        counterDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName, 'pieces', pieceName, 'secondaryCounters', name);
+      }
 
-    // put the data in the stuff to use
-
-    // do this last
+      const counterSnap = await getDoc(counterDoc);
+      const data = counterSnap.data();
+      console.log(data);
+      if (data) {
+        // put data into the fields
+        setLinkedToGlobal(data.linkedToGlobal);
+        setResets(data.doesReset);
+        setResetNumber(data.resetAt);
+        setDoesInterval(data.doesInterval);
+        setIncreaseInterval(data.increaseInterval);
+      } 
+    }
     setOpen(true);
   }
 
@@ -30,11 +51,24 @@ export const SecondaryCounter = ({name, count, projectName}: {name: string, coun
     setOpen(false);
   }
 
-  const handleSave = () => {
+  const handleSave = async() => {
     // save the changes made
+    if (auth.currentUser) {
+      var counterDoc;
+      if (pieceName === "") {
+        console.log("single save");
+        counterDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName, 'secondaryCounters', name);
+      }
+      else {
+        console.log("multipiece save");
+        counterDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName, 'pieces', pieceName, 'secondaryCounters', name);
+      }
 
-
-    setOpen(false);
+      await updateDoc(counterDoc, {linkedToGlobal: linkedToGlobal, doesReset: resets, resetAt: resetNumber, doesInterval: doesInterval, increaseNumber: increaseInterval})
+ 
+      setOpen(false);
+    }
+    
   }
 
   const handleLinkedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
