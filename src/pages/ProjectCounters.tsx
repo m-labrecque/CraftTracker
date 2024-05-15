@@ -74,7 +74,7 @@ export const ProjectCounters = () => {
   const increasePrimary = async() => {
     try {
       if (auth.currentUser) {
-        const projectDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName);
+        const projectDoc = getProjectOrPiece();
         await updateDoc(projectDoc, {mainCounterCount: increment(1)});
 
         const counterDoc = collection(projectDoc, 'secondaryCounters');
@@ -131,7 +131,7 @@ export const ProjectCounters = () => {
   const decreasePrimary = async() => {
     try {
       if (auth.currentUser) {
-        const projectDoc = doc(db, 'users', auth.currentUser.uid, 'projects', projectName);
+        const projectDoc = getProjectOrPiece();
         const projectSnap = await getDoc(projectDoc);
         const projectData = projectSnap.data();
         if (projectData?.mainCounterCount === 0) {
