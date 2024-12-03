@@ -45,7 +45,7 @@ export const Header = () => {
           >
             <Button onClick={logOut}>Log Out</Button>
           </Menu>
-          <Link to='/home'>
+          <Link to='/projects'>
             <Button sx={{color: "#E9EBF8"}}><Typography variant="h5">Craft Tracker</Typography></Button>
           </Link>
           <Box width="25px"></Box>

@@ -19,7 +19,7 @@ export const Login = () => {
     }
 
     if (auth.currentUser) {
-      navigate("/home");
+      navigate("/projects");
     }
   }
 
